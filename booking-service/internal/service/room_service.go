@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
 type RoomService struct {
