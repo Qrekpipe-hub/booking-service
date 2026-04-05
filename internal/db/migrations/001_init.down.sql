@@ -1,0 +1,6 @@
+-- 001_init.down.sql
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS slots;
+DROP TABLE IF EXISTS schedules;
+DROP TABLE IF EXISTS rooms;
+DROP TABLE IF EXISTS users;
