@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
 )
 
 type mockUserRepo struct {
@@ -78,11 +78,11 @@ func TestRegisterAndLogin(t *testing.T) {
 	repo := newMockUserRepo()
 	svc := service.NewAuthService(repo, "secret")
 
-	user, err := svc.Register(context.Background(), "alice@example.com", "password123", model.RoleUser)
+	user, err := svc.Register(context.Background(), "alice@mail.com", "password123", model.RoleUser)
 	require.NoError(t, err)
-	assert.Equal(t, "alice@example.com", user.Email)
+	assert.Equal(t, "alice@mail.com", user.Email)
 
-	token, err := svc.Login(context.Background(), "alice@example.com", "password123")
+	token, err := svc.Login(context.Background(), "alice@mail.com", "password123")
 	require.NoError(t, err)
 
 	claims, err := svc.ParseToken(token)
@@ -94,10 +94,10 @@ func TestRegister_DuplicateEmail(t *testing.T) {
 	repo := newMockUserRepo()
 	svc := service.NewAuthService(repo, "secret")
 
-	_, err := svc.Register(context.Background(), "bob@example.com", "pass", model.RoleUser)
+	_, err := svc.Register(context.Background(), "bob@mail.com", "pass", model.RoleUser)
 	require.NoError(t, err)
 
-	_, err = svc.Register(context.Background(), "bob@example.com", "pass2", model.RoleUser)
+	_, err = svc.Register(context.Background(), "bob@mail.com", "pass2", model.RoleUser)
 	assert.ErrorIs(t, err, service.ErrEmailTaken)
 }
 
@@ -105,8 +105,8 @@ func TestLogin_WrongPassword(t *testing.T) {
 	repo := newMockUserRepo()
 	svc := service.NewAuthService(repo, "secret")
 
-	_, _ = svc.Register(context.Background(), "carol@example.com", "correct", model.RoleUser)
+	_, _ = svc.Register(context.Background(), "carol@mail.com", "correct", model.RoleUser)
 
-	_, err := svc.Login(context.Background(), "carol@example.com", "wrong")
+	_, err := svc.Login(context.Background(), "carol@mail.com", "wrong")
 	assert.ErrorIs(t, err, service.ErrInvalidCredentials)
 }

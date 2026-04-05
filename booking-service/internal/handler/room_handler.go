@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
 )
 
 type RoomHandler struct {

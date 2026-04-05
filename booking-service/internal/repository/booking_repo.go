@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/example/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
 )
 
 type bookingRepo struct{ db *sqlx.DB }

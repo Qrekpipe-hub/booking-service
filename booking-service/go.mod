@@ -1,4 +1,4 @@
-module github.com/example/booking-service
+module github.com/Qrekpipe-hub/booking-service
 
 go 1.22
 

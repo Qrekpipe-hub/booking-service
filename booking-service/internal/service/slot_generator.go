@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 	generateDays  = 14 // rolling window ahead
 )
 
-// SlotGenerator generates and extends slot windows for all schedules.
+// SlotGenerator отвечает за создание и расширение временных слотов.
 type SlotGenerator struct {
 	slots     repository.SlotRepository
 	schedules repository.ScheduleRepository
@@ -28,16 +28,14 @@ func NewSlotGenerator(slots repository.SlotRepository, schedules repository.Sche
 	return &SlotGenerator{slots: slots, schedules: schedules}
 }
 
-// GenerateForSchedule creates slots for the next `generateDays` days for a single schedule.
-// Called immediately after a schedule is created.
+// GenerateForSchedule создаёт слоты на следующие generateDays дней для переданного расписания.
 func (g *SlotGenerator) GenerateForSchedule(ctx context.Context, schedule *model.Schedule) error {
 	from := time.Now().UTC().Truncate(24 * time.Hour)
 	to := from.AddDate(0, 0, generateDays)
 	return g.generateRange(ctx, schedule, from, to)
 }
 
-// ExtendAll extends slot windows for all schedules that need it.
-// Should be called periodically (e.g. daily) by the background goroutine.
+// ExtendAll расширяет горизонт слотов для всех расписаний. Вызывается фоновой горутиной раз в сутки.
 func (g *SlotGenerator) ExtendAll(ctx context.Context) {
 	schedules, err := g.slots.ListSchedulesWithRooms(ctx)
 	if err != nil {
@@ -71,7 +69,7 @@ func (g *SlotGenerator) ExtendAll(ctx context.Context) {
 	}
 }
 
-// generateRange creates slots for [from, to) for the given schedule.
+// generateRange создаёт слоты в диапазоне [from, to) для заданного расписания.
 func (g *SlotGenerator) generateRange(ctx context.Context, schedule *model.Schedule, from, to time.Time) error {
 	startH, startM, err := parseHHMM(schedule.StartTime)
 	if err != nil {
@@ -113,7 +111,7 @@ func (g *SlotGenerator) generateRange(ctx context.Context, schedule *model.Sched
 	return g.slots.BulkInsert(ctx, slots)
 }
 
-// parseHHMM parses "HH:MM" or "HH:MM:SS" (PostgreSQL TIME returns with seconds).
+// parseHHMM разбирает строку «HH:MM» или «HH:MM:SS» (PostgreSQL возвращает TIME с секундами).
 func parseHHMM(s string) (int, int, error) {
 	// Strip seconds part if present ("09:00:00" → "09:00")
 	if len(s) > 5 && s[5] == ':' {

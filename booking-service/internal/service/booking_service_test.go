@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/service"
-	"github.com/example/booking-service/internal/service/mocks"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/service/mocks"
 )
 
 func futureSlot(roomID uuid.UUID) *model.Slot {
@@ -38,7 +38,6 @@ func newBookingService(slotRepo *mocks.MockSlotRepo, bookingRepo *mocks.MockBook
 	return service.NewBookingService(bookingRepo, slotRepo, conf)
 }
 
-// ── Create booking ────────────────────────────────────────────────
 
 func TestBookingCreate_Success(t *testing.T) {
 	slotRepo := mocks.NewMockSlotRepo()
@@ -118,7 +117,7 @@ func TestBookingCreate_SlotAlreadyBooked(t *testing.T) {
 func TestBookingCreate_WithConferenceLinkSuccess(t *testing.T) {
 	slotRepo := mocks.NewMockSlotRepo()
 	bookingRepo := mocks.NewMockBookingRepo()
-	conf := &mocks.MockConferenceService{Link: "https://meet.example.com/abc"}
+	conf := &mocks.MockConferenceService{Link: "https://conf.internal/room/test-abc"}
 
 	roomID := uuid.New()
 	slot := futureSlot(roomID)
@@ -134,7 +133,7 @@ func TestBookingCreate_WithConferenceLinkSuccess(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, booking.ConferenceLink)
-	assert.Equal(t, "https://meet.example.com/abc", *booking.ConferenceLink)
+	assert.Equal(t, "https://conf.internal/room/test-abc", *booking.ConferenceLink)
 }
 
 func TestBookingCreate_ConferenceLinkFailsBookingStillCreated(t *testing.T) {
@@ -148,7 +147,7 @@ func TestBookingCreate_ConferenceLinkFailsBookingStillCreated(t *testing.T) {
 
 	svc := newBookingService(slotRepo, bookingRepo, conf)
 
-	// Booking must still be created even when conference link fails (best-effort)
+	// Бронь должна создаться даже при недоступности conference service
 	booking, err := svc.Create(context.Background(), service.CreateBookingInput{
 		SlotID:               slot.ID,
 		UserID:               uuid.New(),
@@ -160,7 +159,6 @@ func TestBookingCreate_ConferenceLinkFailsBookingStillCreated(t *testing.T) {
 	assert.Equal(t, model.BookingStatusActive, booking.Status)
 }
 
-// ── Cancel booking ────────────────────────────────────────────────
 
 func TestBookingCancel_Success(t *testing.T) {
 	slotRepo := mocks.NewMockSlotRepo()
@@ -223,7 +221,6 @@ func TestBookingCancel_NotFound(t *testing.T) {
 	assert.ErrorIs(t, err, service.ErrBookingNotFound)
 }
 
-// ── After cancel, slot becomes available again ────────────────────
 
 func TestBookingCancelThenRebook(t *testing.T) {
 	slotRepo := mocks.NewMockSlotRepo()

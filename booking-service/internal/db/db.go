@@ -3,6 +3,7 @@ package db
 import (
 	"embed"
 	"fmt"
+	"time"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -22,6 +23,8 @@ func Connect(dsn string) (*sqlx.DB, error) {
 	}
 	database.SetMaxOpenConns(25)
 	database.SetMaxIdleConns(10)
+	database.SetConnMaxLifetime(5 * time.Minute)
+	database.SetConnMaxIdleTime(2 * time.Minute)
 	return database, nil
 }
 

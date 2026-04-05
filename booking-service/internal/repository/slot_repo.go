@@ -11,7 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 
-	"github.com/example/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
 )
 
 type slotRepo struct{ db *sqlx.DB }

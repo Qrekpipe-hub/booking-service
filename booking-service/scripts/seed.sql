@@ -20,6 +20,6 @@ ON CONFLICT DO NOTHING;
 
 COMMIT;
 
--- NOTE: slots are generated automatically by the background goroutine on startup.
+-- Слоты генерируются фоновой горутиной при старте сервиса.
 -- If you need them immediately after seeding, restart the app container:
 --   docker compose restart app

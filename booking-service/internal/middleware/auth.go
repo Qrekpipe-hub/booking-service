@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
 )
 
 const (

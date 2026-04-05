@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/service"
-	"github.com/example/booking-service/internal/service/mocks"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/service/mocks"
 )
 
 func TestGenerateForSchedule_BasicSlotCount(t *testing.T) {
@@ -123,7 +123,6 @@ func TestGenerateForSchedule_SlotTimesAreUTC(t *testing.T) {
 	}
 }
 
-// ── Schedule service validation tests ────────────────────────────
 
 func TestScheduleService_InvalidDayOfWeek(t *testing.T) {
 	roomRepo := &mockRoomRepo{room: &model.Room{ID: uuid.New(), Name: "Test"}}
@@ -173,7 +172,6 @@ func TestScheduleService_RoomNotFound(t *testing.T) {
 	assert.ErrorIs(t, err, service.ErrRoomNotFound)
 }
 
-// ── Minimal stub implementations ──────────────────────────────────
 
 type mockScheduleRepo struct {
 	existing  *model.Schedule

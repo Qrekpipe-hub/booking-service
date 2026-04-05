@@ -19,7 +19,6 @@ import (
 func main() {
 	cfg := config.Load()
 
-	// ── Database ──────────────────────────────────────────────────
 	database, err := db.Connect(cfg.DatabaseURL)
 	if err != nil {
 		log.Fatalf("connect to database: %v", err)
@@ -29,14 +28,12 @@ func main() {
 	}
 	log.Println("migrations applied")
 
-	// ── Repositories ──────────────────────────────────────────────
 	userRepo     := repository.NewUserRepository(database)
 	roomRepo     := repository.NewRoomRepository(database)
 	scheduleRepo := repository.NewScheduleRepository(database)
 	slotRepo     := repository.NewSlotRepository(database)
 	bookingRepo  := repository.NewBookingRepository(database)
 
-	// ── Services ──────────────────────────────────────────────────
 	conferenceSvc := service.NewMockConferenceService()
 	slotGenerator := service.NewSlotGenerator(slotRepo, scheduleRepo)
 
@@ -45,7 +42,6 @@ func main() {
 	scheduleSvc := service.NewScheduleService(scheduleRepo, roomRepo, slotGenerator)
 	bookingSvc  := service.NewBookingService(bookingRepo, slotRepo, conferenceSvc)
 
-	// ── Background: extend slot window daily ───────────────────────
 	go func() {
 		ticker := time.NewTicker(24 * time.Hour)
 		defer ticker.Stop()
@@ -57,7 +53,6 @@ func main() {
 		}
 	}()
 
-	// ── HTTP server ───────────────────────────────────────────────
 	router := handler.NewRouter(handler.Services{
 		Auth:     authSvc,
 		Room:     roomSvc,

@@ -7,10 +7,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
 )
 
-// ── In-memory User Repo ───────────────────────────────────────────
 
 type fakeUserRepo struct {
 	byEmail map[string]*model.User
@@ -36,7 +35,6 @@ func (r *fakeUserRepo) Create(_ context.Context, u *model.User) error {
 	return nil
 }
 
-// ── In-memory Room Repo ───────────────────────────────────────────
 
 type fakeRoomRepo struct {
 	rooms map[uuid.UUID]*model.Room
@@ -61,7 +59,6 @@ func (r *fakeRoomRepo) GetByID(_ context.Context, id uuid.UUID) (*model.Room, er
 	return r.rooms[id], nil
 }
 
-// ── In-memory Schedule Repo ───────────────────────────────────────
 
 type fakeScheduleRepo struct {
 	byRoom map[uuid.UUID]*model.Schedule
@@ -79,7 +76,6 @@ func (r *fakeScheduleRepo) GetByRoomID(_ context.Context, roomID uuid.UUID) (*mo
 	return r.byRoom[roomID], nil
 }
 
-// ── Shared fakeSlotRepo (wraps mocks.MockSlotRepo with ListSchedules) ─
 
 type fakeSlotRepo struct {
 	slots     map[uuid.UUID]*model.Slot

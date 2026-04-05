@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
 var ErrScheduleExists = errors.New("schedule already exists for this room")
@@ -102,7 +102,7 @@ func (s *ScheduleService) Create(ctx context.Context, inp CreateScheduleInput) (
 
 	// Generate slots synchronously — 14 days × ≤48 slots is fast enough.
 	if genErr := s.generator.GenerateForSchedule(ctx, schedule); genErr != nil {
-		log.Printf("schedule %s: slot generation: %v (non-fatal)", schedule.ID, genErr)
+		log.Printf("schedule %s: slot generation error: %v", schedule.ID, genErr)
 	}
 
 	return schedule, nil

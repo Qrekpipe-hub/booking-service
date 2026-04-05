@@ -11,13 +11,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/example/booking-service/internal/handler"
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/service"
-	"github.com/example/booking-service/internal/service/mocks"
+	"github.com/Qrekpipe-hub/booking-service/internal/handler"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/service/mocks"
 )
 
-// ── newTestServer builds a complete in-memory server ──────────────
 
 func newTestServer(t *testing.T) (*httptest.Server, func()) {
 	t.Helper()
@@ -44,7 +43,6 @@ func newTestServer(t *testing.T) (*httptest.Server, func()) {
 	return srv, srv.Close
 }
 
-// ── Scenario 1: create room → create schedule → create booking ────
 
 func TestE2E_CreateRoomScheduleBooking(t *testing.T) {
 	srv, cleanup := newTestServer(t)
@@ -105,7 +103,6 @@ func TestE2E_CreateRoomScheduleBooking(t *testing.T) {
 	assert.Equal(t, slotID, bookOut.Booking.SlotID)
 }
 
-// ── Scenario 2: cancel booking ─────────────────────────────────────
 
 func TestE2E_CancelBooking(t *testing.T) {
 	srv, cleanup := newTestServer(t)
@@ -162,7 +159,6 @@ func TestE2E_CancelBooking(t *testing.T) {
 	require.Equal(t, http.StatusOK, cancelResp2.StatusCode)
 }
 
-// ── Scenario 3: info endpoint ─────────────────────────────────────
 
 func TestE2E_InfoEndpoint(t *testing.T) {
 	srv, cleanup := newTestServer(t)
@@ -172,7 +168,6 @@ func TestE2E_InfoEndpoint(t *testing.T) {
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
 
-// ── Scenario 4: admin cannot create bookings ──────────────────────
 
 func TestE2E_AdminCannotCreateBooking(t *testing.T) {
 	srv, cleanup := newTestServer(t)
@@ -186,7 +181,6 @@ func TestE2E_AdminCannotCreateBooking(t *testing.T) {
 	assert.Equal(t, http.StatusForbidden, resp.StatusCode)
 }
 
-// ── Helpers ───────────────────────────────────────────────────────
 
 func dummyLogin(t *testing.T, client *http.Client, base, role string) string {
 	t.Helper()

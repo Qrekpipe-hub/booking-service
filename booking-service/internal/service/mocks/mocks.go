@@ -6,11 +6,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
-// ── Slot Repository Mock ──────────────────────────────────────────
 
 type MockSlotRepo struct {
 	Slots         map[uuid.UUID]*model.Slot
@@ -63,7 +62,6 @@ func (m *MockSlotRepo) ListSchedulesWithRooms(_ context.Context) ([]model.Schedu
 	return m.Schedules, nil
 }
 
-// ── Booking Repository Mock ───────────────────────────────────────
 
 type MockBookingRepo struct {
 	Bookings      map[uuid.UUID]*model.Booking
@@ -133,7 +131,6 @@ func (m *MockBookingRepo) CountAll(_ context.Context) (int, error) {
 	return len(m.Bookings), nil
 }
 
-// ── Conference Service Mock ───────────────────────────────────────
 
 type MockConferenceService struct {
 	Link string

@@ -9,21 +9,13 @@ import (
 	"github.com/google/uuid"
 )
 
-// ConferenceService generates a conference link for a booking.
-// Real implementations would call an external video-conferencing API.
+// ConferenceService выдаёт ссылку на конференцию для брони.
 type ConferenceService interface {
 	CreateLink(ctx context.Context, bookingID uuid.UUID) (string, error)
 }
 
-// MockConferenceService simulates an external conference service with occasional failures.
-// Failure scenarios modelled:
-//  1. Random 10% unavailability (network / service down).
-//  2. Error is logged and the booking proceeds without a link (best-effort).
-//
-// Decision rationale (see README §Conference Link):
-// The booking is the primary resource; the conference link is supplementary.
-// Failing to obtain a link must never block or roll back a successful booking.
-// The caller receives the booking with conferenceLink=nil if the service is unavailable.
+// MockConferenceService — заглушка внешнего сервиса конференций.
+// С вероятностью 10% возвращает ошибку; бронь при этом создаётся без ссылки.
 type MockConferenceService struct{}
 
 func NewMockConferenceService() ConferenceService {
@@ -31,11 +23,10 @@ func NewMockConferenceService() ConferenceService {
 }
 
 func (m *MockConferenceService) CreateLink(ctx context.Context, bookingID uuid.UUID) (string, error) {
-	// Simulate occasional unavailability
 	if rand.Float32() < 0.1 {
-		return "", fmt.Errorf("conference service temporarily unavailable")
+		return "", fmt.Errorf("conference service unavailable")
 	}
-	link := fmt.Sprintf("https://meet.example.com/booking/%s", bookingID)
-	log.Printf("conference: created link %s for booking %s", link, bookingID)
+	link := fmt.Sprintf("https://conf.internal/room/%s", bookingID)
+	log.Printf("conference link created for booking %s", bookingID)
 	return link, nil
 }

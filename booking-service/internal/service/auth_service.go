@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
 // Fixed UUIDs for dummy users (stable across restarts for test scenarios).

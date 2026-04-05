@@ -22,7 +22,7 @@ CREATE TABLE rooms (
 CREATE TABLE schedules (
     id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     room_id      UUID NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
-    days_of_week INTEGER[] NOT NULL,   -- 0=Sun 1=Mon ... 6=Sat
+    days_of_week INTEGER[] NOT NULL,   -- API encoding: 1=Mon .. 7=Sun
     start_time   TIME NOT NULL,
     end_time     TIME NOT NULL,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -59,6 +59,6 @@ CREATE INDEX idx_bookings_slot_id ON bookings(slot_id);
 
 -- Seed fixed dummy users for /dummyLogin
 INSERT INTO users (id, email, role) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'admin@example.com', 'admin'),
-    ('22222222-2222-2222-2222-222222222222', 'user@example.com',  'user')
+    ('11111111-1111-1111-1111-111111111111', 'admin@booking.local', 'admin'),
+    ('22222222-2222-2222-2222-222222222222', 'user@booking.local',  'user')
 ON CONFLICT DO NOTHING;

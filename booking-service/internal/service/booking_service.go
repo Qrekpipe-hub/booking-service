@@ -9,11 +9,11 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/example/booking-service/internal/model"
-	"github.com/example/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/model"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
 )
 
-// Sentinel errors returned to handlers.
+
 var (
 	ErrSlotNotFound    = errors.New("slot not found")
 	ErrSlotInPast      = errors.New("slot is in the past")
@@ -69,11 +69,11 @@ func (s *BookingService) Create(ctx context.Context, inp CreateBookingInput) (*m
 		CreatedAt: time.Now().UTC(),
 	}
 
-	// Optionally fetch conference link (best-effort — never blocks booking creation)
+	// Ссылка на конференцию запрашивается опционально; ошибка не отменяет бронь.
 	if inp.CreateConferenceLink {
 		link, linkErr := s.conference.CreateLink(ctx, booking.ID)
 		if linkErr != nil {
-			log.Printf("booking %s: conference link failed (best-effort): %v", booking.ID, linkErr)
+			log.Printf("booking %s: failed to get conference link: %v", booking.ID, linkErr)
 		} else {
 			booking.ConferenceLink = &link
 		}
@@ -89,8 +89,7 @@ func (s *BookingService) Create(ctx context.Context, inp CreateBookingInput) (*m
 	return booking, nil
 }
 
-// Cancel cancels the booking. Idempotent: returns current state if already cancelled.
-// Returns ErrForbidden if the booking belongs to a different user.
+// Cancel отменяет бронь. Идемпотентна: повторный вызов на отменённой брони не является ошибкой.
 func (s *BookingService) Cancel(ctx context.Context, bookingID, userID uuid.UUID) (*model.Booking, error) {
 	booking, err := s.bookings.GetByID(ctx, bookingID)
 	if err != nil {
