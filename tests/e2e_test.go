@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/Qrekpipe-hub/booking-service/internal/handler"
-	"github.com/Qrekpipe-hub/booking-service/internal/model"
 	"github.com/Qrekpipe-hub/booking-service/internal/service"
 	"github.com/Qrekpipe-hub/booking-service/internal/service/mocks"
 )
