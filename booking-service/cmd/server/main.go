@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/example/booking-service/internal/config"
-	"github.com/example/booking-service/internal/db"
-	"github.com/example/booking-service/internal/handler"
-	"github.com/example/booking-service/internal/repository"
-	"github.com/example/booking-service/internal/service"
+	"github.com/Qrekpipe-hub/booking-service/internal/config"
+	"github.com/Qrekpipe-hub/booking-service/internal/db"
+	"github.com/Qrekpipe-hub/booking-service/internal/handler"
+	"github.com/Qrekpipe-hub/booking-service/internal/repository"
+	"github.com/Qrekpipe-hub/booking-service/internal/service"
 )
 
 func main() {
